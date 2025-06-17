@@ -4,7 +4,15 @@ export default function DetailsScreen({ navigation, route }: any) {
   const { mensagem } = route.params || {};
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tela de Detalhes</Text>
+      <Text style={styles.title}>Detalhes do Item</Text>
+      {item ? (
+        <>
+          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text style={styles.itemDescription}>{item.description}</Text>
+        </>
+      ) : (
+        <Text style={styles.message}>Nenhum item selecionado</Text>
+      )}
       <Text style={styles.message}>{mensagem || "Nenhuma mensagem"}</Text>
       <TouchableOpacity
         style={styles.button}
@@ -30,6 +38,20 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     color: "#333",
+  },
+
+  itemTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 10,
+  },
+
+  itemDescription: {
+    fontSize: 16,
+    color: "#666",
+    textAlign: "center",
+    marginBottom: 20,
   },
 
   button: {
