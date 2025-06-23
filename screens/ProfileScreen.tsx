@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 export default function ProfileScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tela de Profile</Text>
+      <Text style={styles.title}>Tela de Perfil</Text>
+
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate("Home")}
@@ -12,12 +13,26 @@ export default function ProfileScreen({ navigation }: any) {
       </TouchableOpacity>
 
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, { backgroundColor: "#dc3545" }]}
         onPress={() =>
-          navigation.navigate("Details", { mensagem: "Ola Profile" })
+          navigation.navigate("Details", { mensagem: "Olá do Perfil!" })
         }
       >
         <Text style={styles.buttonText}>Ir para Detalhes</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: "#007bff" }]}
+        onPress={() => navigation.navigate("Scroll")}
+      >
+        <Text style={styles.buttonText}>Ir para ScrollView</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={[styles.button, { backgroundColor: "#28a745" }]}
+        onPress={() => navigation.navigate("Form")}
+      >
+        <Text style={styles.buttonText}>Ir para Formulário</Text>
       </TouchableOpacity>
     </View>
   );
@@ -31,19 +46,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
-
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 20,
     color: "#333",
   },
-
   button: {
     backgroundColor: "#28a745",
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
+    marginBottom: 10,
+    width: 200,
+    alignItems: "center",
   },
   buttonText: {
     color: "#fff",
