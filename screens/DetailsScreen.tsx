@@ -1,23 +1,23 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 export default function DetailsScreen({ navigation, route }: any) {
-  const { item, mensagem } = route.params || {};
+  const { item } = route.params || {};
+  const { mensagem } = route.params || {};
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Detalhes do Item</Text>
-
       {item ? (
-        <View>
+        <>
           <Text style={styles.itemTitle}>{item.title}</Text>
           <Text style={styles.itemDescription}>{item.description}</Text>
-        </View>
-      ) : mensagem ? (
-        <Text style={styles.message}>{mensagem}</Text>
+        </>
       ) : (
-        <Text style={styles.message}>Nenhum item selecionado</Text>
+        <>
+          <Text style={styles.message}>Nenhum item selecionado</Text>
+          {mensagem && <Text style={styles.mensagem}>{mensagem}</Text>}
+        </>
       )}
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.goBack()}
@@ -54,11 +54,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "center",
   },
+  mensagem: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
+    textAlign: "center",
+  },
   message: {
     fontSize: 18,
     color: "#333",
     marginBottom: 20,
-    textAlign: "center",
   },
   button: {
     backgroundColor: "#dc3545",
