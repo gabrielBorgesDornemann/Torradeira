@@ -8,15 +8,15 @@ export default function DetailsScreen({ navigation, route }: any) {
     <View style={styles.container}>
       <Text style={styles.title}>Detalhes do Item</Text>
       {item ? (
-        <>
+        <View>
           <Text style={styles.itemTitle}>{item.title}</Text>
           <Text style={styles.itemDescription}>{item.description}</Text>
-        </>
+        </View>
       ) : (
-        <>
+        <View>
           <Text style={styles.message}>Nenhum item selecionado</Text>
           {mensagem && <Text style={styles.mensagem}>{mensagem}</Text>}
-        </>
+        </View>
       )}
       <TouchableOpacity
         style={styles.button}
