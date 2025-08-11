@@ -1,21 +1,5 @@
-import React from "react";
 import { StyleSheet, Modal, View, Text } from "react-native";
 import CustomButton from "./CustomButton";
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withSpring,
-} from "react-native-reanimated";
-
-interface CustomModalProps {
-  visible: boolean;
-  onClose: () => void;
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-  onConfirm: () => void;
-}
 
 export default function CustomModal({
   visible,
@@ -25,26 +9,16 @@ export default function CustomModal({
   confirmText = "Confirmar",
   cancelText = "Cancelar",
   onConfirm,
-}: CustomModalProps) {
-  const scale = useSharedValue(0);
-
-  React.useEffect(() => {
-    scale.value = visible ? withSpring(1) : withSpring(0);
-  }, [visible]);
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
+}) {
   return (
     <Modal
       transparent
       visible={visible}
-      animationType="none"
+      animationType="fade"
       onRequestClose={onClose}
     >
       <View style={styles.overlay}>
-        <Animated.View style={[styles.modalContainer, animatedStyle]}>
+        <View style={styles.modalContainer}>
           <Text style={styles.modalTitle}>{title}</Text>
           <Text style={styles.modalMessage}>{message}</Text>
           <View style={styles.buttonContainer}>
@@ -61,7 +35,7 @@ export default function CustomModal({
               style={styles.modalButton}
             />
           </View>
-        </Animated.View>
+        </View>
       </View>
     </Modal>
   );
@@ -77,8 +51,8 @@ const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: "#fff",
     borderRadius: 10,
-    width: "80%",
     padding: 20,
+    width: "80%",
     alignItems: "center",
   },
   modalTitle: {

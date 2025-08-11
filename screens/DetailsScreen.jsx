@@ -1,23 +1,17 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
-export default function DetailsScreen({ navigation, route }: any) {
-  const { item } = route.params || {};
-  const { mensagem } = route.params || {};
+export default function DetailsScreen({ navigation, route }) {
+  const { task } = route.params;
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Detalhes do Item</Text>
-      {item ? (
-        <View>
-          <Text style={styles.itemTitle}>{item.title}</Text>
-          <Text style={styles.itemDescription}>{item.description}</Text>
-        </View>
-      ) : (
-        <View>
-          <Text style={styles.message}>Nenhum item selecionado</Text>
-          {mensagem && <Text style={styles.mensagem}>{mensagem}</Text>}
-        </View>
-      )}
+      <Text style={styles.title}>Detalhes da Tarefa</Text>
+      <View style={styles.card}>
+        <Text style={styles.cardTitle}>{task.title}</Text>
+        <Text style={styles.cardStatus}>
+          Status: {task.completed ? "Concluída" : "Pendente"}
+        </Text>
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.goBack()}
@@ -42,34 +36,38 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#333",
   },
-  itemTitle: {
+  card: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 20,
+    width: "100%",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  cardTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 10,
   },
-  itemDescription: {
+  cardStatus: {
     fontSize: 16,
     color: "#666",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  mensagem: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  message: {
-    fontSize: 18,
-    color: "#333",
-    marginBottom: 20,
   },
   button: {
     backgroundColor: "#dc3545",
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 5,
+    width: "100%",
+    alignItems: "center",
   },
   buttonText: {
     color: "#fff",
