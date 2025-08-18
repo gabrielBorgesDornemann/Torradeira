@@ -7,13 +7,16 @@ import AddTaskScreen from "./screens/AddTaskScreen";
 import DetailsScreen from "./screens/DetailsScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import SettingsScreen from "./screens/SettingsScreen";
-import { TaskProvider } from "./contexts/TaskContext";
+import { TaskProvider, useTasks } from "./contexts/TaskContext";
 import Icon from "react-native-vector-icons/MaterialIcons";
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
+// Stack para a aba Home, incluindo AddTask e Details
 function HomeStack() {
   return (
     <Stack.Navigator>
@@ -44,66 +47,73 @@ function HomeStack() {
   );
 }
 
+// Configuração do TabNavigator
 function TabNavigator() {
+  const { theme } = useTasks();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
-          if (route.name === "Tarefas")  {
-            iconName = "home";
-          } else if (route.name === "Profile") {
-            iconName = "person";
-          } else if (route.name === "Settings") {
-            iconName = "settings";
-          }
+          if (route.name === "Tarefas") iconName = "home";
+          else if (route.name === "Perfil") iconName = "person";
+          else if (route.name === "Configurações") iconName = "settings";
           return <Icon name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: "#007bff",
+        tabBarInactiveTintColor: "#666",
+        tabBarStyle: {
+          backgroundColor: theme === "light" ? "#f5f5f5" : "#333",
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen
+        name="Tarefas"
+        component={HomeStack}
+        options={{ headerShown: false }}
+      />
+      <Tab.Screen name="Perfil" component={ProfileScreen} />
+      <Tab.Screen name="Configurações" component={SettingsScreen} />
     </Tab.Navigator>
   );
 }
 
+// Configuração do DrawerNavigator
 function DrawerNavigator() {
   return (
     <Drawer.Navigator
       screenOptions={{
-        
-        drawerActiveBackgroundColor: "#28a745",
-        drawerActiveTintColor: "#fff",
-        drawerInactiveTintColor: "#333",
+        drawerStyle: { backgroundColor: "#f5f5f5", width: 240 },
+        drawerActiveTintColor: "#007bff",
+        drawerInactiveTintColor: "#666",
       }}
     >
       <Drawer.Screen
         name="Tarefas"
         component={TabNavigator}
         options={{
-          drawIcon: ({ color, size }) => (
+          drawerIcon: ({ color, size }) => (
             <Icon name="home" size={size} color={color} />
           ),
-         }}
+        }}
       />
       <Drawer.Screen
         name="Perfil"
         component={ProfileScreen}
         options={{
-          drawIcon: ({ color, size }) => (
+          drawerIcon: ({ color, size }) => (
             <Icon name="person" size={size} color={color} />
           ),
-         }}
+        }}
       />
       <Drawer.Screen
         name="Configurações"
         component={SettingsScreen}
         options={{
-          drawIcon: ({ color, size }) => (
-            <Icon name="setting" size={size} color={color} />
+          drawerIcon: ({ color, size }) => (
+            <Icon name="settings" size={size} color={color} />
           ),
-         }}
+        }}
       />
     </Drawer.Navigator>
   );
@@ -111,10 +121,10 @@ function DrawerNavigator() {
 
 export default function App() {
   return (
-    <TaskProvider>
+    <Provider store={store}>
       <NavigationContainer>
         <DrawerNavigator />
       </NavigationContainer>
-    </TaskProvider>
+    </Provider>
   );
 }

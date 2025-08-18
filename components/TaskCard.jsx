@@ -1,15 +1,21 @@
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { useTasks } from "../contexts/TaskContext";
+import { useSelector } from "react-redux";
 
 export default function TaskCard({
   title,
   completed,
+  priority,
   onPress,
   onToggle,
   isLocal,
   onDelete,
 }) {
-  const { theme } = useTasks();
+  const { theme } = useSelector((state) => state.tasks);
+  const priorityColors = {
+    alta: "#dc3545",
+    media: "#ffc107",
+    baixa: "#28a745",
+  };
 
   return (
     <TouchableOpacity
@@ -26,9 +32,20 @@ export default function TaskCard({
             {completed ? "✓" : "⬜"}
           </Text>
         </TouchableOpacity>
-        <Text style={[styles.title, theme === "dark" && styles.darkText]}>
-          {title}
-        </Text>
+        <View style={styles.textContainer}>
+          <Text style={[styles.title, theme === "dark" && styles.darkText]}>
+            {title}
+          </Text>
+          <Text
+            style={[
+              styles.priority,
+              theme === "dark" && styles.darkText,
+              { color: priorityColors[priority] || "#666" },
+            ]}
+          >
+            Prioridade: {priority || "Não definida"}
+          </Text>
+        </View>
         {isLocal && (
           <TouchableOpacity onPress={onDelete}>
             <Text style={styles.deleteButton}>🗑️</Text>
@@ -68,10 +85,16 @@ const styles = StyleSheet.create({
   checkedCheckbox: {
     color: "#28a745",
   },
+  textContainer: {
+    flex: 1,
+  },
   title: {
     fontSize: 16,
     color: "#333",
-    flex: 1,
+  },
+  priority: {
+    fontSize: 14,
+    color: "#666",
   },
   darkText: {
     color: "#fff",

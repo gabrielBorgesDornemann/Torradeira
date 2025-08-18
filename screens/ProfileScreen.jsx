@@ -1,22 +1,20 @@
-import { StyleSheet, View, Text } from "react-native";
-import { useTasks } from "../contexts/TaskContext";
+import { StyleSheet, View, Text } from 'react-native';
+import { useTasks } from '../contexts/TaskContext';
 
 export default function ProfileScreen() {
-  const { theme } = useTasks();
+  const { theme, getCompletedCount } = useTasks();
 
   return (
-    <View style={[styles.container, theme === "dark" && styles.darkContainer]}>
-      <Text style={[styles.title, theme === "dark" && styles.darkText]}>
-        aaaaa
+    <View style={[styles.container, theme === 'dark' && styles.darkContainer]}>
+      <Text style={[styles.title, theme === 'dark' && styles.darkText]}>Perfil do Usuário</Text>
+      <Text style={[styles.text, theme === 'dark' && styles.darkText]}>
+        Nome: Usuário Exemplo
       </Text>
-      <Text style={[styles.text, theme === "dark" && styles.darkText]}>
-        Meu Perfil
+      <Text style={[styles.text, theme === 'dark' && styles.darkText]}>
+        Email: usuario@exemplo.com
       </Text>
-      <Text style={[styles.Text, theme === "dark" && styles.darkText]}>
-        Email: WhenIMetYouAndSummer@gmail.com
-      </Text>
-      <Text style={[styles.Text, theme === "dark" && styles.darkText]}>
-        Tarefas Concluídas: (baseado no TaskContext)
+      <Text style={[styles.text, theme === 'dark' && styles.darkText]}>
+        Tarefas Concluídas: {getCompletedCount()}
       </Text>
     </View>
   );
@@ -25,23 +23,26 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#f5f5f5',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
+  },
+  darkContainer: {
+    backgroundColor: '#333',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
+  },
+  text: {
+    fontSize: 16,
+    color: '#333',
     marginBottom: 10,
   },
-  Text: {
-    fontSize: 18,
-    marginVertical: 5,
-  },
-  darkContainer: {
-    backgroundColor: "#333",
-  },
   darkText: {
-    color: "#fff",
+    color: '#fff',
   },
 });

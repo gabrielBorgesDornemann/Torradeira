@@ -1,23 +1,24 @@
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text } from 'react-native';
+import { useTasks } from '../contexts/TaskContext';
 
-export default function DetailsScreen({ navigation, route }) {
+export default function DetailsScreen({ route }) {
   const { task } = route.params;
+  const { theme } = useTasks();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Detalhes da Tarefa</Text>
-      <View style={styles.card}>
-        <Text style={styles.cardTitle}>{task.title}</Text>
-        <Text style={styles.cardStatus}>
-          Status: {task.completed ? "Concluída" : "Pendente"}
-        </Text>
-      </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.buttonText}>Voltar</Text>
-      </TouchableOpacity>
+    <View style={[styles.container, theme === 'dark' && styles.darkContainer]}>
+      <Text style={[styles.title, theme === 'dark' && styles.darkText]}>
+        {task.title}
+      </Text>
+      <Text style={[styles.detail, theme === 'dark' && styles.darkText]}>
+        Descrição: {task.description || 'Nenhuma descrição'}
+      </Text>
+      <Text style={[styles.detail, theme === 'dark' && styles.darkText]}>
+        Prioridade: {task.priority || 'Não definida'}
+      </Text>
+      <Text style={[styles.detail, theme === 'dark' && styles.darkText]}>
+        Status: {task.completed ? 'Concluída' : 'Pendente'}
+      </Text>
     </View>
   );
 }
@@ -25,53 +26,26 @@ export default function DetailsScreen({ navigation, route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f5f5f5",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: '#f5f5f5',
+    alignItems: 'center',
+    justifyContent: 'center',
     padding: 20,
+  },
+  darkContainer: {
+    backgroundColor: '#333',
   },
   title: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    color: "#333",
+    color: '#333',
   },
-  card: {
-    backgroundColor: "#fff",
-    padding: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    marginBottom: 20,
-    width: "100%",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  cardTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333",
+  detail: {
+    fontSize: 16,
+    color: '#333',
     marginBottom: 10,
   },
-  cardStatus: {
-    fontSize: 16,
-    color: "#666",
-  },
-  button: {
-    backgroundColor: "#dc3545",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-    width: "100%",
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
+  darkText: {
+    color: '#fff',
   },
 });

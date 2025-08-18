@@ -1,4 +1,4 @@
-import { StyleSheet, TextInput } from "react-native";
+import { StyleSheet, TextInput } from 'react-native';
 
 export default function CustomInput({
   value,
@@ -20,19 +20,20 @@ export default function CustomInput({
   );
 }
 
+
 const styles = StyleSheet.create({
   input: {
-    width: "100%",
-    backgroundColor: "#fff",
+    width: '100%',
+    backgroundColor: '#fff',
     padding: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: '#ddd',
     marginVertical: 10,
     fontSize: 16,
   },
   multiline: {
     height: 100,
-    textAlignVertical: "top",
+    textAlignVertical: 'top',
   },
 });
