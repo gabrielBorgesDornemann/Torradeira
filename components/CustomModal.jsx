@@ -32,10 +32,7 @@ export default function CustomModal({
             {title}
           </Text>
           <Text
-            style={[
-              styles.modalMenssage,
-              theme === "dark" && { color: "#fff" },
-            ]}
+            style={[styles.modalMessage, theme === "dark" && { color: "#fff" }]}
           >
             {message}
           </Text>

@@ -1,15 +1,14 @@
 import { StyleSheet, View, Text, Switch, Alert } from "react-native";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask } from "../features/tasks/tasksSlice";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { Picker } from "@react-native-picker/picker";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
-import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { addTask } from "../features/tasks/tasksSlice";
 
-// Esquema de validação com Yup
 const validationSchema = Yup.object().shape({
   title: Yup.string()
     .min(3, "O título deve ter pelo menos 3 caracteres")
@@ -45,11 +44,13 @@ export default function AddTaskScreen({ navigation }) {
           completed: false,
         }
       );
-      addTask({
-        title: values.title,
-        description: values.description,
-        priority: values.priority,
-      });
+      dispatch(
+        addTask({
+          title: values.title,
+          description: values.description,
+          priority: values.priority,
+        })
+      );
       setSuccessMessage("Tarefa adicionada com sucesso!");
       setTimeout(() => {
         setSuccessMessage("");

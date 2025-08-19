@@ -1,25 +1,29 @@
-import { StyleSheet, View, Text, Switch } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, reset } from "../features/counterSlice";
+import {
+  toggleTheme,
+  clearTasks,
+  exportTasks,
+  restoreTasks,
+} from "../features/tasks/tasksSlice";
 import CustomButton from "../components/CustomButton";
 import CustomModal from "../components/CustomModal";
-import { useTasks } from "../contexts/TaskContext";
 import { useNavigation } from "@react-navigation/native";
-import { useSelector, useDispatch } from "react-redux";
-import { increment, decrement, reset } from "./features/counterSlice";
-
-const counter = useSelector((state) => state.counter.value);
-const dispatch = useDispatch();
 
 export default function SettingsScreen() {
-  const { toggleTheme, theme, clearTasks, exportTasks, restoreTasks } =
-    useTasks();
+  const { theme } = useSelector((state) => state.tasks);
+  const counter = useSelector((state) => state.counter.value);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-  const navigate = useNavigation();
 
   const handleClearTasks = async () => {
     try {
-      await clearTasks();
+      await dispatch(clearTasks());
+      await dispatch(saveTasks([]));
       setModalVisible(false);
       setSuccessMessage("Tarefas limpas com sucesso!");
       setTimeout(() => setSuccessMessage(""), 2000);
@@ -32,8 +36,8 @@ export default function SettingsScreen() {
 
   const handleExport = async () => {
     try {
-      const message = await exportTasks();
-      setSuccessMessage(message);
+      const result = await dispatch(exportTasks()).unwrap();
+      setSuccessMessage(result);
       setTimeout(() => setSuccessMessage(""), 2000);
     } catch (err) {
       setSuccessMessage("");
@@ -43,8 +47,8 @@ export default function SettingsScreen() {
 
   const handleRestore = async () => {
     try {
-      const message = await restoreTasks();
-      setSuccessMessage(message);
+      const result = await dispatch(restoreTasks()).unwrap();
+      setSuccessMessage("Backup restaurado com sucesso!");
       setTimeout(() => setSuccessMessage(""), 2000);
     } catch (err) {
       setSuccessMessage("");
@@ -60,29 +64,27 @@ export default function SettingsScreen() {
       {successMessage ? (
         <Text style={styles.successText}>{successMessage}</Text>
       ) : null}
-
       <Text style={[styles.text, theme === "dark" && styles.darkText]}>
         Contador: {counter}
       </Text>
       <CustomButton
         title="Incrementar"
         onPress={() => dispatch(increment())}
-        color="#28a745"
+        color="#007bff"
       />
       <CustomButton
         title="Decrementar"
         onPress={() => dispatch(decrement())}
-        color="#dc3545"
+        color="#007bff"
       />
       <CustomButton
-        title="Resetar"
+        title="Resetar Contador"
         onPress={() => dispatch(reset())}
-        color="#17a2b8"
+        color="#007bff"
       />
-
       <CustomButton
         title={`Mudar para Tema ${theme === "light" ? "Escuro" : "Claro"}`}
-        onPress={toggleTheme}
+        onPress={() => dispatch(toggleTheme())}
         color="#007bff"
       />
       <CustomButton
@@ -102,7 +104,7 @@ export default function SettingsScreen() {
       />
       <CustomButton
         title="Abrir Menu Lateral"
-        onPress={() => navigate.toggleDrawer()}
+        onPress={() => navigation.toggleDrawer()}
         color="#007bff"
       />
       <CustomModal
@@ -132,6 +134,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 20,
     color: "#333",
+  },
+  text: {
+    fontSize: 16,
+    color: "#333",
+    marginBottom: 10,
   },
   successText: {
     fontSize: 16,

@@ -1,19 +1,23 @@
-import { StyleSheet, View, Text } from 'react-native';
-import { useTasks } from '../contexts/TaskContext';
+import { StyleSheet, View, Text } from "react-native";
+import { useSelector } from "react-redux";
 
 export default function ProfileScreen() {
-  const { theme, getCompletedCount } = useTasks();
+  const { theme, localTasks } = useSelector((state) => state.tasks);
+  const getCompletedCount = () =>
+    localTasks.filter((task) => task.completed).length;
 
   return (
-    <View style={[styles.container, theme === 'dark' && styles.darkContainer]}>
-      <Text style={[styles.title, theme === 'dark' && styles.darkText]}>Perfil do Usuário</Text>
-      <Text style={[styles.text, theme === 'dark' && styles.darkText]}>
+    <View style={[styles.container, theme === "dark" && styles.darkContainer]}>
+      <Text style={[styles.title, theme === "dark" && styles.darkText]}>
+        Perfil do Usuário
+      </Text>
+      <Text style={[styles.text, theme === "dark" && styles.darkText]}>
         Nome: Usuário Exemplo
       </Text>
-      <Text style={[styles.text, theme === 'dark' && styles.darkText]}>
+      <Text style={[styles.text, theme === "dark" && styles.darkText]}>
         Email: usuario@exemplo.com
       </Text>
-      <Text style={[styles.text, theme === 'dark' && styles.darkText]}>
+      <Text style={[styles.text, theme === "dark" && styles.darkText]}>
         Tarefas Concluídas: {getCompletedCount()}
       </Text>
     </View>
@@ -23,26 +27,26 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#f5f5f5",
+    alignItems: "center",
+    justifyContent: "center",
     padding: 20,
   },
   darkContainer: {
-    backgroundColor: '#333',
+    backgroundColor: "#333",
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    color: '#333',
+    color: "#333",
   },
   text: {
     fontSize: 16,
-    color: '#333',
+    color: "#333",
     marginBottom: 10,
   },
   darkText: {
-    color: '#fff',
+    color: "#fff",
   },
 });
